@@ -7,15 +7,26 @@ Github: https://github.com/TrollSkull
 Version: 3.0
 """
 
-try:
-    from lib.main import Main, main
-    from lib.core.exceptions import BashTubeExceptions
+import sys
+import logging
 
-except ImportError as err:
-    import sys
+from lib.main import main
+from lib.core.exceptions import BashTubeExceptions
 
-    print(err, file=sys.stderr)
-    sys.exit(1)
+def setup_logging():
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+
+def main():
+    setup_logging()
+    try:
+        main()
+    except BashTubeExceptions as e:
+        logging.error(f"BashTube Error: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
